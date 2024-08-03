@@ -12,6 +12,7 @@ import CreatorSignupForm from './pages/CreatorSignup';
 import CollabDetails from './components/Creator/CollabDetails';
 import CreatorLogin from './pages/CreatorLogin';
 import CreatorDetails from './components/Creator/CreatorDetails';
+import SignUp from './pages/Signup';
 function App() {
   
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/collaborate" element={<Collaborate />}/>
           <Route path='/collab-details' element={<CollabDetails />}/>
           <Route path='/creator-details' element={<CreatorDetails/>}/>
+          <Route path='/signu' element={<SignUp/>}/>
         </Routes>
         </UserAuthContextProvider>
      
