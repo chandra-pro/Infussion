@@ -1,6 +1,4 @@
 /* eslint-disable no-unused-vars */
-
-import Navbar from './components/Navbar/Navbar'
 import './App.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import BrandHome from './pages/BrandHome';
@@ -10,16 +8,14 @@ import CreatorDashboard from './pages/CreatorDashboard';
 import BrandDashBoard from './pages/BrandDashboard';
 import { UserAuthContextProvider } from './components/Brand/UserAuthContext';
 import Collaborate from './pages/Collaborate';
-import CreatorSignupForm from './components/Creator/CreatorSignup';
+import CreatorSignupForm from './pages/CreatorSignup';
 import CollabDetails from './components/Creator/CollabDetails';
-//  import SignUp from './pages/Signup';
-import CreatorLogin from './components/Creator/CreatorLogin';
+import CreatorLogin from './pages/CreatorLogin';
 import CreatorDetails from './components/Creator/CreatorDetails';
 function App() {
   
 
   return (
-    // <Router>
     <div className="bg-white dark:bg-gray-900 dark:text-white duration-200 overflow-hidden">
       
       <UserAuthContextProvider>

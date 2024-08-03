@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUserAuth } from '../Brand/UserAuthContext';
+import { useUserAuth } from '../components/Brand/UserAuthContext';
 
 const socialMediaOptions = ['Instagram', 'YouTube', 'TikTok', 'Twitter', 'Facebook'];
 

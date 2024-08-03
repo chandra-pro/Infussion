@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Navbar from '../components/Navbar/Navbar';
 // import BackgroundSlider from './components/BackgroundSlider'; // Import if needed
 
 const BrandLogin = () => {
@@ -89,6 +90,7 @@ const BrandLogin = () => {
   return (
     <div className="flex h-screen">
       {/* Include BackgroundSlider if needed */}
+      <Navbar />
       <div className="flex-grow flex justify-center items-center px-4">
         <div className="bg-white p-8 rounded-md shadow-md mt-16 max-w-sm">
           <h2 className="text-2xl font-medium mb-4">Login</h2>
