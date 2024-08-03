@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import {Routes, Route, useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../components/Brand/UserAuthContext';
 import CampaignSettingsForm from '../components/Brand/CompaignSettingForm';
@@ -10,25 +10,28 @@ import Header from '../components/Creator/Header';
 
 const BrandDashBoard = () => {
   const navigate = useNavigate();
-  const { brandUser } = useUserAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const {brandUser, loading, checkTokens } = useUserAuth();
+  const token = localStorage.getItem('creatorRefreshToken');
+  console.log("Tokenss:", token);
+
+  useEffect(() => {
+    checkTokens('creator');
+  }, [checkTokens]);
 
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
   if (!brandUser) {
-   
-    navigate('/brand/signup')
+    return null;
   }
 
   return (
     <div className="container mx-auto p-2 relative">
-      <div className={`fixed inset-0 z-40 bg-gray-900 bg-opacity-50 md:hidden ${sidebarOpen ? 'block' : 'hidden'}`} onClick={toggleSidebar}></div>
-      <div className="flex flex-col md:flex-row">
+   
        
-        <main className={`flex-1 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md ml-0 md:ml-4 mt-4 md:mt-0 ${sidebarOpen ? 'hidden' : 'block'}`}>
+        <main className={`flex-1 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md ml-0 md:ml-4 mt-4 md:mt-0 `}>
             <Header title="brand/dashboard/notifications" userType='brand'/>
          
           <Routes>
@@ -55,7 +58,7 @@ const BrandDashBoard = () => {
           </Routes>
         </main>
       </div>
-    </div>
+  
   );
 };
 

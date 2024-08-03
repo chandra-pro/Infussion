@@ -46,7 +46,7 @@ export function UserAuthContextProvider({ children }) {
       }
     } catch (error) {
       console.error('Error refreshing access token:', error);
-      navigate(`/${userType}/login`);
+      navigate(`/${userType}/signup`);
     }
   };
 
@@ -184,7 +184,7 @@ export function UserAuthContextProvider({ children }) {
         if (isTokenExpired(refreshToken)) {
           // Both tokens are expired
           logOut(userType);
-          navigate(`/${userType}/login`); 
+          navigate(`/${userType}/signup`); 
          
         } else {
           console.log("lo hm fir aa gye");
