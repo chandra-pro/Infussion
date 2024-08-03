@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../components/Brand/UserAuthContext';
+import Navbar from '../components/Navbar/Navbar';
 
 const socialMediaOptions = ['Instagram', 'YouTube', 'TikTok', 'Twitter', 'Facebook'];
 
@@ -157,6 +158,7 @@ const CreatorSignupForm = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Navbar />
       <h1 className="text-3xl font-bold mb-4">Creator Signup</h1>
       {!isOtpSent ? (
         <form onSubmit={handleOtpRequest}>
@@ -170,11 +172,11 @@ const CreatorSignupForm = () => {
               id="email"
               value={formData.email}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

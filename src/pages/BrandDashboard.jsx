@@ -11,11 +11,9 @@ import Header from '../components/Creator/Header';
 const BrandDashBoard = () => {
   const navigate = useNavigate();
   const {brandUser, loading, checkTokens } = useUserAuth();
-  const token = localStorage.getItem('creatorRefreshToken');
-  console.log("Tokenss:", token);
 
   useEffect(() => {
-    checkTokens('creator');
+    checkTokens('brand');
   }, [checkTokens]);
 
 
@@ -24,6 +22,7 @@ const BrandDashBoard = () => {
   }
 
   if (!brandUser) {
+    console.log("nahi jai")
     return null;
   }
 

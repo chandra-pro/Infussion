@@ -1,7 +1,7 @@
 
 const CreatorReview = ({ image, username, text }) => {
   return (
-    <div className="bg-purple-100 p-6 rounded-lg shadow-lg text-center">
+    <div className="bg-white-500 p-4 rounded-lg shadow-lg text-center">
       <img 
         className="w-16 h-16 rounded-full mx-auto border-2 border-green-400"
         src={image} 

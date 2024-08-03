@@ -11,8 +11,8 @@ import CreatorProfile from '../components/Creator/CreatorProfile';
 
 const CreatorDashboard = () => {
   const { creatorUser, loading, checkTokens } = useUserAuth();
-  const token = localStorage.getItem('creatorRefreshToken');
-  console.log("Tokenss:", token);
+
+
 
   useEffect(() => {
     checkTokens('creator');

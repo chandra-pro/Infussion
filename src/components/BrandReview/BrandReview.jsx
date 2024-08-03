@@ -22,7 +22,7 @@ const testimonials = [
 
 const BrandReview = () => {
   return (
-    <div className="min-h-screen p-8 flex flex-col items-center container">
+    <div className="min-h-screen p-4 flex flex-col items-center container">
       <h1 className="text-3xl font-bold text-gray-900 mb-4">Brands love us</h1>
       <p className="text-lg text-gray-600 mb-8 text-center max-w-2xl">
         The leading Influencer marketing platform for challenger brands and micro influencers

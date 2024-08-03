@@ -21,8 +21,13 @@ const testimonials = [
 
 const ReviewComponent = () => {
   return (
-    <div className="flex items-center container">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
+    <div className="min-h-screen p-4 flex flex-col items-center container">
+    <h1 className="text-3xl font-bold text-gray-900 mb-4">Creator&apos;s Review</h1>
+    <p className="text-lg text-gray-600 mb-8 text-center max-w-2xl">
+      The leading Influencer marketing platform for challenger brands and micro influencers
+    </p>
+ 
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
         {testimonials.map((testimonial, index) => (
           <CreatorReview 
             key={index}
