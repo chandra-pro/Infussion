@@ -1,10 +1,7 @@
 // src/HomePage.jsx
 import { useState,useEffect } from 'react';
-import Header from './Header';
-import OfferCard from './OfferCard';
 import { useNavigate } from 'react-router-dom';
 import { FaFacebookF, FaInstagram, FaTwitter ,FaRupeeSign } from 'react-icons/fa';
-
 import { IconContext } from 'react-icons';
 import { useUserAuth } from '../Brand/UserAuthContext';
 
@@ -102,7 +99,7 @@ const HomePage = () => {
                          {campaign.incentives}
                        </div>
                        <button
-                         onClick={() =>handleRequestParticipation(campaign)}
+                         onClick={() =>handleRequestParticipation(campaign._id)}
                          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                        >
                          Request

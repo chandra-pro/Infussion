@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaEdit } from 'react-icons/fa';
 import { MdLocationOn, MdRefresh } from 'react-icons/md';
+import toast, { Toaster } from 'react-hot-toast';
+import { Ring } from 'react-awesome-spinners';
 
 const CreatorProfile = () => {
   const [creatorProfileData, setCreatorProfileData] = useState({
@@ -14,9 +16,11 @@ const CreatorProfile = () => {
   });
   const [availableTags] = useState(['Tech', 'Marketing', 'Lifestyle', 'Travel', 'Food']);
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const baseUrl = import.meta.env.VITE_BASE_URL; 
 
   const fetchProfile = async () => {
+    setLoading(true);
     const token = localStorage.getItem('creatorToken');
     try {
       const response = await axios.get(`${baseUrl}/api/creator/profile`, {
@@ -25,13 +29,16 @@ const CreatorProfile = () => {
         }
       });
       setCreatorProfileData(response.data);
+      toast.success('Profile fetched successfully');
     } catch (error) {
+      toast.error('Error fetching profile data');
       console.error('Error fetching profile data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
- 
     fetchProfile();
   }, []);
 
@@ -58,9 +65,9 @@ const CreatorProfile = () => {
       });
       console.log('Profile updated successfully:', response.data);
       setIsEditing(false);
-      // Optionally, fetch the profile again to update the state with the latest data
-      // fetchProfile();
+      toast.success('Profile updated successfully');
     } catch (error) {
+      toast.error('Error updating profile');
       console.error('Error updating profile:', error);
     }
   };
@@ -77,28 +84,34 @@ const CreatorProfile = () => {
 
   return (
     <div className="p-4 bg-white">
+      <Toaster />
       <main className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
           <div className="md:w-1/3 bg-gray-100 p-4 rounded">
             <div className="flex flex-col items-center">
-            <img
-                  src={`${baseUrl}/${creatorProfileData.profilePicture}`}
-                  alt="Profile"
-                  className="w-32 h-32 rounded-full object-cover"
-                />
-
-              <button className="text-orange-500 mt-2">Update photo</button>
-              <div className="mt-4 text-center">
-                <h2 className="text-xl font-bold">{creatorProfileData.name}</h2>
-                <p className="text-gray-600 flex items-center justify-center">
-                  <MdLocationOn className="mr-1" />
-                  {creatorProfileData.city}
-                </p>
-              </div>
-              <div className="flex items-center space-x-2 mt-2">
-                <MdRefresh className="text-gray-500" />
-                <button className="text-gray-500 text-sm" onClick={()=>fetchProfile}>Last update: Invalid date. Click to refresh</button>
-              </div>
+              {loading ? (
+                <Ring />
+              ) : (
+                <>
+                  <img
+                    src={`${baseUrl}/${creatorProfileData.profilePicture}`}
+                    alt="Profile"
+                    className="w-32 h-32 rounded-full object-cover"
+                  />
+                  <button className="text-orange-500 mt-2">Update photo</button>
+                  <div className="mt-4 text-center">
+                    <h2 className="text-xl font-bold">{creatorProfileData.name}</h2>
+                    <p className="text-gray-600 flex items-center justify-center">
+                      <MdLocationOn className="mr-1" />
+                      {creatorProfileData.city}
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-2 mt-2">
+                    <MdRefresh className="text-gray-500" />
+                    <button className="text-gray-500 text-sm" onClick={fetchProfile}>Last update: Invalid date. Click to refresh</button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <div className="md:w-2/3">
@@ -200,6 +213,3 @@ const CreatorProfile = () => {
 };
 
 export default CreatorProfile;
-
-
-

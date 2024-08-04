@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MdLocationOn, MdRefresh } from 'react-icons/md';
 import { useLocation } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
+import { Ring } from 'react-awesome-spinners';
 
 const CreatorDetails = () => {
   const location = useLocation();
   const { creator } = location.state || {};
-
- 
+  const [loading, setLoading] = useState(false);
 
   const [creatorProfileData, setCreatorProfileData] = useState({
     name: '',
@@ -22,6 +23,7 @@ const CreatorDetails = () => {
 
   const fetchProfile = async () => {
     const token = localStorage.getItem('creatorToken');
+    setLoading(true);
     try {
       const response = await axios.get(`${baseUrl}/api/creator/profile`, {
         headers: {
@@ -29,8 +31,12 @@ const CreatorDetails = () => {
         }
       });
       setCreatorProfileData(response.data);
+      toast.success('Profile data fetched successfully');
     } catch (error) {
+      toast.error('Error fetching profile data');
       console.error('Error fetching profile data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,6 +50,7 @@ const CreatorDetails = () => {
 
   return (
     <div className="p-4 bg-white">
+      <Toaster />
       <main className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
           <div className="md:w-1/3 bg-gray-100 p-4 rounded">
@@ -63,8 +70,11 @@ const CreatorDetails = () => {
               </div>
               <div className="flex items-center space-x-2 mt-2">
                 <MdRefresh className="text-gray-500" />
-                <button className="text-gray-500 text-sm" onClick={fetchProfile}>Last update: {new Date().toLocaleDateString()}</button>
+                <button className="text-gray-500 text-sm" onClick={fetchProfile} disabled={loading}>
+                  Last update: {new Date().toLocaleDateString()}
+                </button>
               </div>
+              {loading && <Ring className="mt-2" />}
             </div>
           </div>
           <div className="md:w-2/3">

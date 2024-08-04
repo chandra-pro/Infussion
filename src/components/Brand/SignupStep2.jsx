@@ -89,7 +89,7 @@ const SignupStep2 = ({ formData, nextStep, prevStep }) => {
       {verificationError && <p className="text-red-500 text-sm mb-2">{verificationError}</p>}
       <button
         type="button"
-        className="btn btn-primary mt-4 w-full"
+        className="bg-lime-400 text-white cursor-pointer hover:scale-105 duration-300 py-2 px-8 mt-2 rounded-full z-10"
         disabled={isVerifying}
         onClick={sendVerificationCode}
       >

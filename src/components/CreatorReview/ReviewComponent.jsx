@@ -27,7 +27,7 @@ const ReviewComponent = () => {
       The leading Influencer marketing platform for challenger brands and micro influencers
     </p>
  
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-7xl">
         {testimonials.map((testimonial, index) => (
           <CreatorReview 
             key={index}

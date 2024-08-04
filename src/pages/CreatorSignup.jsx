@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../components/Brand/UserAuthContext';
 import Navbar from '../components/Navbar/Navbar';
+import toast, { Toaster } from 'react-hot-toast';
+import { Ring } from 'react-awesome-spinners';
 
 const socialMediaOptions = ['Instagram', 'YouTube', 'TikTok', 'Twitter', 'Facebook'];
 
 const CreatorSignupForm = () => {
-  const { creatorUser, loading } = useUserAuth();
+  const { setCreatorUser } = useUserAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,18 +20,12 @@ const CreatorSignupForm = () => {
   });
   const [newSocialMediaHandle, setNewSocialMediaHandle] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState(socialMediaOptions[0]);
-  const [loding, setLoding] = useState(false);
+  const [loding, setloding] = useState(false);
   const [otp, setOtp] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const navigate = useNavigate();
-  const baseUrl = import.meta.env.VITE_BASE_URL; 
-
-  // useEffect(() => {
-  //   if (creatorUser) {
-  //     navigate('/creator/dashboard');
-  //   }
-  // }, [creatorUser, navigate]);
+  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -58,7 +54,7 @@ const CreatorSignupForm = () => {
 
   const handleOtpRequest = async (e) => {
     e.preventDefault();
-    setLoding(true);
+    setloding(true);
 
     try {
       const response = await fetch(`${baseUrl}/api/creator/request-otp`, {
@@ -70,22 +66,24 @@ const CreatorSignupForm = () => {
       });
 
       const data = await response.json();
-      setLoding(false);
+      setloding(false);
       if (response.ok) {
         setIsOtpSent(true);
+        toast.success('OTP sent successfully!');
       } else {
-        console.error('OTP request failed:', data.message);
+        toast.error(`OTP request failed: ${data.message}`);
       }
     } catch (error) {
+      toast.error('Error during OTP request');
       console.error('Error during OTP request:', error);
     } finally {
-      setLoding(false);
+      setloding(false);
     }
   };
 
   const handleOtpVerification = async (e) => {
     e.preventDefault();
-    setLoding(true);
+    setloding(true);
 
     try {
       const response = await fetch(`${baseUrl}/api/creator/verify-otp`, {
@@ -97,25 +95,28 @@ const CreatorSignupForm = () => {
       });
 
       const data = await response.json();
-      setLoding(false);
+      setloding(false);
       if (response.ok) {
         setOtpVerified(true);
+        toast.success('OTP verified successfully!');
       } else {
-        console.error('OTP verification failed:', data.message);
+        toast.error(`OTP verification failed: ${data.message}`);
       }
     } catch (error) {
+      toast.error('Error during OTP verification');
       console.error('Error during OTP verification:', error);
     } finally {
-      setLoding(false);
+      setloding(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!otpVerified) {
+      toast.error('Please verify OTP before submitting');
       return;
     }
-    setLoding(true);
+    setloding(true);
 
     const formDataToSend = new FormData();
     formDataToSend.append('name', formData.name);
@@ -133,33 +134,33 @@ const CreatorSignupForm = () => {
       });
 
       const data = await response.json();
-      setLoding(false);
+      setloding(false);
       if (response.ok) {
         localStorage.setItem('creatorUser', JSON.stringify(data.Creator));
         localStorage.setItem('creatorToken', data.accessToken);
         localStorage.setItem('creatorRefreshToken', data.refreshToken);
+        await setCreatorUser(data.Creator);
         navigate('/creator/dashboard');
+        toast.success('Signup successful!');
       } else if (response.status === 409) {
-        // Redirect to login page if email exists
         navigate('/creator/login');
+        toast.error('Email already exists, please login');
       } else {
-        console.error('Signup failed:', data.message);
+        toast.error(`Signup failed: ${data.message}`);
       }
     } catch (error) {
+      toast.error('Error during signup');
       console.error('Error during signup:', error);
     } finally {
-      setLoding(false);
+      setloding(false);
     }
   };
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <div className="container mx-auto p-4">
       <Navbar />
       <h1 className="text-3xl font-bold mb-4">Creator Signup</h1>
+      
       {!isOtpSent ? (
         <form onSubmit={handleOtpRequest}>
           <div className="mb-4">
@@ -172,7 +173,7 @@ const CreatorSignupForm = () => {
               id="email"
               value={formData.email}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-3/4 md:w-1/2 py-2 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>
@@ -182,7 +183,7 @@ const CreatorSignupForm = () => {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               disabled={loding}
             >
-              {loding ? 'Requesting OTP...' : 'Request OTP'}
+              {loding ? <Ring /> : 'Request OTP'}
             </button>
           </div>
         </form>
@@ -198,17 +199,17 @@ const CreatorSignupForm = () => {
               id="otp"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-3/4 md:w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               disabled={loding}
             >
-              {loding ? 'Verifying OTP...' : 'Verify OTP'}
+              {loding ? <Ring /> : 'Verify OTP'}
             </button>
           </div>
         </form>
@@ -224,7 +225,7 @@ const CreatorSignupForm = () => {
               id="name"
               value={formData.name}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-3/4 md:w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>
@@ -238,7 +239,7 @@ const CreatorSignupForm = () => {
               id="password"
               value={formData.password}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-3/4 md:w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>
@@ -252,7 +253,7 @@ const CreatorSignupForm = () => {
               id="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-3/4 md:w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>
@@ -266,20 +267,20 @@ const CreatorSignupForm = () => {
               id="niche"
               value={formData.niche}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-3/4 md:w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 md:ml-80">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="socialMediaHandles">
               Social Media Handles
             </label>
-            <div className="flex mb-2">
+            <div className="flex mb-2 md:w-3/4 w-full">
               <select
                 name="platform"
                 id="platform"
                 value={selectedPlatform}
                 onChange={(e) => setSelectedPlatform(e.target.value)}
-                className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"
+                className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2 md:w-1/10 w-1/20"
               >
                 <option value="" disabled>Select Platform</option>
                 {socialMediaOptions.map((option) => (
@@ -294,7 +295,7 @@ const CreatorSignupForm = () => {
                 id="newSocialMediaHandle"
                 value={newSocialMediaHandle}
                 onChange={(e) => setNewSocialMediaHandle(e.target.value)}
-                className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-1"
+                className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-1 w-3/4"
               />
               <button
                 type="button"
@@ -321,16 +322,16 @@ const CreatorSignupForm = () => {
               name="profilePicture"
               id="profilePicture"
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-3/4 md:w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               disabled={loding}
             >
-              {loding ? 'Signing Up...' : 'Sign Up'}
+              {loding ? <Ring /> : 'Sign Up'}
             </button>
           </div>
         </form>

@@ -2,11 +2,13 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // or 'react-router' depending on your version
 import { Toaster, toast } from 'react-hot-toast';
+import { useUserAuth } from '../components/Brand/UserAuthContext';
 
 const CreatorLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const {setCreatorUser}=useUserAuth();
   const baseUrl = import.meta.env.VITE_BASE_URL; 
   const navigate = useNavigate();
 
@@ -24,6 +26,7 @@ const CreatorLogin = () => {
         localStorage.setItem('creatorUser', JSON.stringify(Creator));
         localStorage.setItem('creatorToken', accessToken);
         localStorage.setItem('creatorRefreshToken', refreshToken);
+        setCreatorUser(Creator);
 
 
 

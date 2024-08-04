@@ -14,9 +14,9 @@ const CreatorDashboard = () => {
 
 
 
-  useEffect(() => {
-    checkTokens('creator');
-  }, [checkTokens]);
+  // useEffect(() => {
+  //   checkTokens('creator');
+  // }, [checkTokens]);
 
 
   if (loading) {

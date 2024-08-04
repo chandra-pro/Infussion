@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserAuth } from './UserAuthContext';
+import toast from 'react-hot-toast';
+import { Ring } from 'react-awesome-spinners';
 
 const CampaignSettingForm = () => {
   const [formData, setFormData] = useState({
@@ -72,18 +74,26 @@ const CampaignSettingForm = () => {
       setLoading(false);
 
       if (response.ok) {
+        toast.success('Campaign created successfully!');
         history('/brand/dashboard'); // Redirect to the dashboard or another page
       } else {
         setErrors({ server: data.message || 'Something went wrong' });
+        toast.error(data.message || 'Something went wrong');
       }
     } catch (error) {
       setLoading(false);
       setErrors({ server: 'Server error' });
+      toast.error('Server error');
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg border border-gray-200">
+      {loading && (
+        <div className="flex justify-center">
+          <Ring />
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <h1 className="text-4xl font-bold opacity-80 mb-5">Campaign Form</h1>
         {errors.server && <p className="text-red-500">{errors.server}</p>}

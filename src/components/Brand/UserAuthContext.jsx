@@ -24,11 +24,14 @@ export function UserAuthContextProvider({ children }) {
   const refreshAccessToken = async (userType) => {
     const refreshToken = localStorage.getItem(`${userType}RefreshToken`);
     console.log("refresh token",refreshToken);
-    if (!refreshToken) return null;
+    if (!refreshToken){
+   console.log("bhkkk")
+   return null;
+    } 
 
 
     try {
-      const response = await fetch(`${baseUrl}/${userType}/token`, {
+      const response = await fetch(`${baseUrl}/api/${userType}/token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,6 +202,8 @@ export function UserAuthContextProvider({ children }) {
       value={{
         brandUser,
         creatorUser,
+        setBrandUser,
+        setCreatorUser,
         loading,
         setUpRecaptcha,
         logOut,

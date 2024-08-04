@@ -3,6 +3,7 @@ import BackgroundSlider from '../components/Brand/BackgroundSlider';
 import SignupStep1 from '../components/Brand/SignupStep1';
 import SignupStep2 from '../components/Brand/SignupStep2';
 import SignupStep3 from '../components/Brand/SignupStep3';
+import Navbar from '../components/Navbar/Navbar';
 
 const BrandSignup = () => {
   const [currentStep, setCurrentStep] = useState(1); // Initial step
@@ -46,6 +47,8 @@ const BrandSignup = () => {
   };
 
   return (
+    <div>
+      <Navbar />
     <div className="flex flex-col h-screen overflow-y-auto">
       <BackgroundSlider />
       <div className="flex-grow flex justify-center items-start px-4 z-10" style={{ marginTop: '-10vh' }}>
@@ -53,6 +56,7 @@ const BrandSignup = () => {
           {getSignupStep()}
         </div>
       </div>
+    </div>
     </div>
   );
 };

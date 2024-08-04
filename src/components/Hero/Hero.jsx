@@ -87,11 +87,7 @@ const Hero = () => {
                         text="I am brand"
                         bgColor="bg-primary"
                         textColor="text-white"
-                        handler={()=>{
-                           navigate("/signu");
-                          // localStorage.clear()
-
-                        }}
+                        handler={()=>{navigate('/brand/dashboard')}}
                       />
                     </div>
                     <div

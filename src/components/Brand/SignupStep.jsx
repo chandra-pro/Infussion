@@ -7,9 +7,11 @@ const SignupStep = ({ title, children, nextStep, prevStep }) => {
       {children}
       <div className="flex justify-center mt-4">
         {prevStep && (
-          <button type="button" className="btn btn-secondary" onClick={prevStep}>
-            Back
-          </button>
+           <button
+           onClick={prevStep}
+           className="bg-white text-black p-2 rounded-full shadow-lg cursor-pointer mr-4"
+         >
+           Back</button>
         )}
         <button
           type="button"

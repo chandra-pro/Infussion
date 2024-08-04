@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SignupStep from './SignupStep';
-
+import { useUserAuth } from './UserAuthContext';
+import toast from 'react-hot-toast';
+import { Ring } from 'react-awesome-spinners';
 
 const SignupStep3 = ({ formData, setFormData }) => {
   const [brandName, setBrandName] = useState('');
@@ -11,8 +13,8 @@ const SignupStep3 = ({ formData, setFormData }) => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { setBrandUser } = useUserAuth();
   const baseUrl = import.meta.env.VITE_BASE_URL;
-
 
   const handleSubmit = async () => {
     const newErrors = {};
@@ -56,22 +58,20 @@ const SignupStep3 = ({ formData, setFormData }) => {
       setLoading(false);
 
       if (response.ok) {
-        console.log('Signup complete:', data);
-
+        toast.success('Signup complete');
         localStorage.setItem('brandToken', data.accessToken);
         localStorage.setItem('brandRefreshToken', data.refreshToken);
         localStorage.setItem('brandUser', JSON.stringify(data.user));
-        console.log("user data",data.user);
-
-      // Optionally set the user in context if needed
-       //setUser(data.user);
+        setBrandUser(data.user);
         navigate('/brand/dashboard');
       } else {
         setErrors({ server: data.message || 'Something went wrong' });
+        toast.error(data.message || 'Something went wrong');
       }
     } catch (error) {
       setLoading(false);
       setErrors({ server: 'Server error' });
+      toast.error('Server error');
     }
   };
 
@@ -137,6 +137,7 @@ const SignupStep3 = ({ formData, setFormData }) => {
         {errors.gstNo && <p className="text-red-500 text-sm">{errors.gstNo}</p>}
       </div>
 
+      {loading && <Ring className="mx-auto" />}
       {errors.server && <p className="text-red-500 text-sm">{errors.server}</p>}
     </SignupStep>
   );

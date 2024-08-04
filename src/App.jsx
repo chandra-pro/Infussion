@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import './App.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import BrandHome from './pages/BrandHome';
 import BrandLogin from './pages/BrandLogin';
 import BrandSignup from './pages/BrandSignup';
@@ -20,6 +21,7 @@ function App() {
     <div className="bg-white dark:bg-gray-900 dark:text-white duration-200 overflow-hidden">
       
       <UserAuthContextProvider>
+        <Toaster />
       <Routes>
           <Route path="/" element={<BrandHome/>} />
           <Route path="/creator/dashboard/*" element={<CreatorDashboard/>} />

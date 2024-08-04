@@ -67,11 +67,11 @@ const BrandProfile = () => {
         <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
           <div className="md:w-1/3 bg-gray-100 p-4 rounded">
             <div className="flex flex-col items-center">
-              <img
-                src="https://via.placeholder.com/150"
-                alt="Profile"
-                className="w-32 h-32 rounded-full object-cover"
-              />
+            <img
+                  src={`${baseUrl}/${brandProfileData.brandLogo}`}
+                  alt="Profile"
+                  className="w-32 h-32 rounded-full object-cover"
+                />
               <button className="text-orange-500 mt-2">Update photo</button>
               <div className="mt-4 text-center">
                 <h2 className="text-xl font-bold">{brandProfileData.brandName}</h2>
