@@ -13,7 +13,8 @@ import CreatorSignupForm from './pages/CreatorSignup';
 import CollabDetails from './components/Creator/CollabDetails';
 import CreatorLogin from './pages/CreatorLogin';
 import CreatorDetails from './components/Creator/CreatorDetails';
-import SignUp from './pages/Signup';
+import NotFoundPage from './pages/NotFoundPage';
+
 function App() {
   
 
@@ -24,6 +25,7 @@ function App() {
         <Toaster />
       <Routes>
           <Route path="/" element={<BrandHome/>} />
+          <Route path="*" element={<NotFoundPage />} />
           <Route path="/creator/dashboard/*" element={<CreatorDashboard/>} />
           <Route path="/brand/dashboard/*" element={<BrandDashBoard/>} />
           <Route path="/brand/login" element={<BrandLogin/>} />
@@ -33,7 +35,7 @@ function App() {
           <Route path="/collaborate" element={<Collaborate />}/>
           <Route path='/collab-details' element={<CollabDetails />}/>
           <Route path='/creator-details' element={<CreatorDetails/>}/>
-          <Route path='/signu' element={<SignUp/>}/>
+          
         </Routes>
         </UserAuthContextProvider>
      
