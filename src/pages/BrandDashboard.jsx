@@ -14,17 +14,17 @@ const BrandDashBoard = () => {
   const navigate = useNavigate();
   const { brandUser, loading, checkTokens } = useUserAuth();
 
-  useEffect(() => {
-    const checkUserTokens = async () => {
-      try {
-        await checkTokens('brand');
-      } catch (error) {
-        toast.error('Error checking tokens');
-        console.error('Error checking tokens:', error);
-      }
-    };
-    checkUserTokens();
-  }, [checkTokens]);
+  // useEffect(() => {
+  //   const checkUserTokens = async () => {
+  //     try {
+  //       await checkTokens('brand');
+  //     } catch (error) {
+  //       toast.error('Error checking tokens');
+  //       console.error('Error checking tokens:', error);
+  //     }
+  //   };
+  //   checkUserTokens();
+  // }, [checkTokens]);
 
   if (loading) {
     return (
@@ -35,13 +35,13 @@ const BrandDashBoard = () => {
   }
 
   if (!brandUser) {
-    navigate('/login');
+    navigate('brand/signup');
     return null;
   }
 
   return (
     <div className="container mx-auto p-2 relative">
-      <Toaster />
+   
       <main className={`flex-1 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md ml-0 md:ml-4 mt-4 md:mt-0`}>
         <Header title="brand/dashboard/notifications" userType='brand' />
         <Routes>
