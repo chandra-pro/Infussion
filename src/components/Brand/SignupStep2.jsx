@@ -3,7 +3,8 @@ import { useState } from 'react';
 import SignupStep from './SignupStep';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import { useUserAuth } from "./UserAuthContext";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import toast from 'react-hot-toast';
+import { Ring } from 'react-awesome-spinners';
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -22,11 +23,6 @@ const SignupStep2 = ({ formData, nextStep, prevStep }) => {
     setNumber(e.target.value);
   };
 
-
-
-
-
-
   const sendVerificationCode = async () => {
     setIsVerifying(true);
     setVerificationError(''); // Clear error before sending
@@ -40,14 +36,13 @@ const SignupStep2 = ({ formData, nextStep, prevStep }) => {
     try {
       const phoneNumber = "+91" + number;
       const response = await setUpRecaptcha(phoneNumber);
-      console.log("response of otp",response);
       setResult(response);
-      console.log(`Sent verification code to ${phoneNumber}`); // Replace with actual sending
+      toast.success(`Sent verification code to ${phoneNumber}`);
       setIsVerifying(false);
     } catch (error) {
-      console.log("msg", error.message);
+      setVerificationError('An error occurred while sending the code. Please try again.');
+      toast.error('An error occurred while sending the code. Please try again.');
       setIsVerifying(false);
-      setVerificationError('An error occurred while sending the code. Please try again.',error.message);
     }
   };
 
@@ -55,15 +50,18 @@ const SignupStep2 = ({ formData, nextStep, prevStep }) => {
     if (verificationCode !== '' || verificationCode === null) {
       try {
         await result.confirm(verificationCode);
-        const response = await fetch( `${baseUrl}/auth/numberVerification?phone=${number}`, { method: 'POST' });
+        const response = await fetch(`${baseUrl}/auth/numberVerification?phone=${number}`, { method: 'POST' });
         const data = await response.json();
         setIsVerified(true); // Set verified to true
         nextStep({ ...formData, phone: number });
+        toast.success('Phone number verified successfully!');
       } catch (err) {
         setVerificationError(err.message);
+        toast.error('Invalid verification code. Please try again.');
       }
     } else {
       setVerificationError('Invalid verification code. Please try again.');
+      toast.error('Invalid verification code. Please try again.');
     }
   };
 
@@ -74,6 +72,7 @@ const SignupStep2 = ({ formData, nextStep, prevStep }) => {
       nextStep={handleVerify}
       // Disable Next button until verified
     >
+    
       <label htmlFor="phone-number" className="block mb-2 text-sm font-medium">
         Phone Number
       </label>
@@ -93,7 +92,7 @@ const SignupStep2 = ({ formData, nextStep, prevStep }) => {
         disabled={isVerifying}
         onClick={sendVerificationCode}
       >
-        {isVerifying ? 'Sending...' : 'Send Verification Code'}
+        {isVerifying ? <Ring size={20} color="#fff" /> : 'Send Code'}
       </button>
       <label htmlFor="verification-code" className="block mt-4 text-sm font-medium">
         Verification Code

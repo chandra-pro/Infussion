@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route,useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../components/Brand/UserAuthContext';
 import HomePage from '../components/Creator/HomePage';
 
@@ -12,7 +12,7 @@ import CreatorProfile from '../components/Creator/CreatorProfile';
 const CreatorDashboard = () => {
   const { creatorUser, loading, checkTokens } = useUserAuth();
 
-
+const navigate = useNavigate();
 
   // useEffect(() => {
   //   checkTokens('creator');
@@ -24,6 +24,7 @@ const CreatorDashboard = () => {
   }
 
   if (!creatorUser) {
+    navigate('creator/signup');
     return null;
   }
 
